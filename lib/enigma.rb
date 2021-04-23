@@ -1,0 +1,50 @@
+class Enigma
+  attr_reader :alphabet, :keys, :offsets
+  def initialize
+    @alphabet = ("a".."z").to_a << " "
+    @keys = keys
+    @offsets = offsets
+  end
+
+  def set_keys
+    set_keys = rand 0..99999
+    @keys = set_keys.to_s.rjust(5, "0")
+  end
+
+  def offsets
+    Time.now.strftime('%d%m%y')
+  end
+
+  def shifts(date, key)
+    shifts = {}
+    date = date.to_i * date.to_i
+    shifts[:a] = date.digits[3] += key.to_s[0..1].to_i
+    shifts[:b] = date.digits[2] += key.to_s[1..2].to_i
+    shifts[:c] = date.digits[1] += key.to_s[2..3].to_i
+    shifts[:d] = date.digits[0] += key.to_s[3..4].to_i
+    shifts
+  end
+
+  def check_special_char(letter)
+    special_char = ["!", ".", "?", ",", "'"]
+    special_char.include?(letter)
+  end
+
+  def encrypt(decrypted, key, date)
+    encrypted = []
+    output = {:date => date, :encryption => ' ', :key => key}
+    shift = shifts(date, key).values
+    decrypted.downcase.split('').each do |letter|
+      if check_special_char(letter)
+        encrypted << letter
+        next
+      end
+      position = alphabet.index(letter)
+      new_alpha = alphabet.rotate(shift[0])
+      encrypted << new_alpha[position]
+      shift = shift.rotate(1)
+    end
+    output[:encryption] = encrypted.join
+    output
+  end
+end
