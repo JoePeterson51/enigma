@@ -49,6 +49,25 @@ class Enigma
     output
   end
 
+  def decrypt(decrypted, key, date)
+    encrypted = []
+    output = {:date => date, :encryption => ' ', :key => key}
+    shift = shifts(date, key).values
+    decrypted.downcase.split('').each do |letter|
+      if check_special_char(letter)
+        encrypted << letter
+        shift = shift.rotate(1)
+        next
+      end
+      new_alpha = alphabet.rotate(shift[0])
+      position = new_alpha.index(letter)
+      encrypted << alphabet[position]
+      shift = shift.rotate(1)
+    end
+    output[:encryption] = encrypted.join
+    output
+  end
+
   def code_cracker(encrypted, date)
     offset = date.to_i.abs2
     encrypted_split = encrypted.split('')
@@ -56,6 +75,5 @@ class Enigma
     new_pos_1 = alphabet.index(encrypted_split[-3])
     new_pos_2 = alphabet.index(encrypted_split[-2])
     new_pos_3 = alphabet.index(encrypted_split[-1])
-    require 'pry'; binding.pry
   end
 end

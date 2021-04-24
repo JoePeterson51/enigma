@@ -66,10 +66,54 @@ RSpec.describe do
                              key: "02715",
                              date: "040895")
     end
+
+    it 'encrypts using todays date' do
+      enigma = Enigma.new
+
+      allow(enigma).to receive(:offsets) do
+        "240421"
+      end
+
+      expected = enigma.encrypt("Hello, World!?!?", "02715", enigma.offsets)
+
+      expect(expected).to eq(encryption: "qgfax, lxtft!?!?",
+                             key: "02715",
+                             date: "240421")
+    end
+  end
+
+  describe '#decrypt' do
+    it 'decrypts the message given' do
+      enigma = Enigma.new
+
+      expected = enigma.decrypt("keder ohulw", "02715", "040895")
+      expected2 = enigma.decrypt("keder ohulw!", "02715", "040895")
+
+      expect(expected).to eq(encryption: "hello world",
+                             key: "02715",
+                             date: "040895")
+      expect(expected2).to eq(encryption: "hello world!",
+                             key: "02715",
+                             date: "040895")
+    end
+
+    it 'decrypts using todays date' do
+      enigma = Enigma.new
+
+      allow(enigma).to receive(:offsets) do
+        "240421"
+      end
+
+      expected = enigma.decrypt("qgfax, lxtft!?!?", "02715", enigma.offsets)
+
+      expect(expected).to eq(encryption: "hello, world!?!?",
+                             key: "02715",
+                             date: "240421")
+    end
   end
 
   describe '#code_cracker' do
-    it 'can crack a code without the key' do
+    xit 'can crack a code without the key' do
       enigma = Enigma.new
 
       expected = enigma.encrypt("end", "02715", "040895")
