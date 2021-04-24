@@ -80,6 +80,24 @@ RSpec.describe do
                              key: "02715",
                              date: "240421")
     end
+
+    it 'enctypts using random key and todays date' do
+      enigma = Enigma.new
+
+      allow(enigma).to receive(:offsets) do
+        "240421"
+      end
+
+      allow(enigma). to receive(:set_keys) do
+        "30298"
+      end
+
+      expected = enigma.encrypt("Hello, World!?!?", enigma.set_keys, enigma.offsets)
+
+      expect(expected).to eq(encryption: "rircy, nyvrv!?!?",
+                             key: "30298",
+                             date: "240421")
+    end
   end
 
   describe '#decrypt' do
