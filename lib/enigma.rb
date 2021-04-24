@@ -17,7 +17,7 @@ class Enigma
 
   def shifts(date, key)
     shifts = {}
-    date = date.to_i * date.to_i
+    date = date.to_i.abs2
     shifts[:a] = date.digits[3] += key.to_s[0..1].to_i
     shifts[:b] = date.digits[2] += key.to_s[1..2].to_i
     shifts[:c] = date.digits[1] += key.to_s[2..3].to_i
@@ -26,7 +26,7 @@ class Enigma
   end
 
   def check_special_char(letter)
-    special_char = ["!", ".", "?", ",", "'"]
+    special_char = ["!", ".", "?", ",", "'", " "]
     special_char.include?(letter)
   end
 
@@ -37,6 +37,7 @@ class Enigma
     decrypted.downcase.split('').each do |letter|
       if check_special_char(letter)
         encrypted << letter
+        shift = shift.rotate(1)
         next
       end
       position = alphabet.index(letter)
@@ -46,5 +47,15 @@ class Enigma
     end
     output[:encryption] = encrypted.join
     output
+  end
+
+  def code_cracker(encrypted, date)
+    offset = date.to_i.abs2
+    encrypted_split = encrypted.split('')
+    end_positions = [4, 13, 3]
+    new_pos_1 = alphabet.index(encrypted_split[-3])
+    new_pos_2 = alphabet.index(encrypted_split[-2])
+    new_pos_3 = alphabet.index(encrypted_split[-1])
+    require 'pry'; binding.pry
   end
 end

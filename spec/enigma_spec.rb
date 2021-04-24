@@ -67,4 +67,29 @@ RSpec.describe do
                              date: "040895")
     end
   end
+
+  describe '#code_cracker' do
+    it 'can crack a code without the key' do
+      enigma = Enigma.new
+
+      expected = enigma.encrypt("end", "02715", "040895")
+
+      expect(expected).to eq(:date=> "040895",
+                              :encryption=> "hnw",
+                              :key=> "02715")
+        # e shifts 3
+        # n shifts 27
+        # d shifts 73
+        # 1, 0, 2, 5 are the offsets
+        # 2, 27, 71, 15 are the keys but we don't know these
+
+        # 1) square the date to get the offsets
+        # 2) pull off the last 4 digits (1, 0, 2, 5 )
+        # 3) find the difference in position e -> h = 2
+        # 4) subtract the offset we know from the difference
+        # 5) a: key = 2
+
+      expect(enigma.code_cracker("hnw", "040895")).to eq()
+    end
+  end
 end
