@@ -30,11 +30,11 @@ class Enigma
     special_char.include?(letter)
   end
 
-  def encrypt(decrypted, key, date)
+  def encrypt(message, key, date)
     encrypted = []
     output = {:date => date, :encryption => ' ', :key => key}
     shift = shifts(date, key).values
-    decrypted.downcase.split('').each do |letter|
+    message.downcase.split('').each do |letter|
       if check_special_char(letter)
         encrypted << letter
         shift = shift.rotate(1)
