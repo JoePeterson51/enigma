@@ -26,15 +26,17 @@ class Enigma
   end
 
   def check_special_char(letter)
-    special_char = ["!", ".", "?", ",", "'", " "]
+    special_char = ["!", ".", "?", ",", "'", "\n", "-", ":", ";",
+       "1", "2", "3", "4", "5", "6", "7", "8", "9", '"', "[", "]",
+       "(", ")"]
     special_char.include?(letter)
   end
 
-  def encrypt(decrypted, key, date)
+  def encrypt(message, key, date)
     encrypted = []
     output = {:date => date, :encryption => ' ', :key => key}
     shift = shifts(date, key).values
-    decrypted.downcase.split('').each do |letter|
+    message.downcase.split('').each do |letter|
       if check_special_char(letter)
         encrypted << letter
         shift = shift.rotate(1)
@@ -43,6 +45,7 @@ class Enigma
       position = alphabet.index(letter)
       new_alpha = alphabet.rotate(shift[0])
       encrypted << new_alpha[position]
+      # require 'pry'; binding.pry
       shift = shift.rotate(1)
     end
     output[:encryption] = encrypted.join
@@ -59,11 +62,12 @@ class Enigma
         shift = shift.rotate(1)
         next
       end
-      new_alpha = alphabet.rotate(shift[0])
-      position = new_alpha.index(letter)
-      encrypted << alphabet[position]
+      position = alphabet.index(letter)
+      new_alpha = alphabet.rotate(-shift[0])
+      encrypted << new_alpha[position]
       shift = shift.rotate(1)
     end
+    # require 'pry'; binding.pry
     output[:encryption] = encrypted.join
     output
   end
