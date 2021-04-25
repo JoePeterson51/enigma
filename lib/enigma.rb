@@ -26,7 +26,9 @@ class Enigma
   end
 
   def check_special_char(letter)
-    special_char = ["!", ".", "?", ",", "'"]
+    special_char = ["!", ".", "?", ",", "'", "\n", "-", ":", ";",
+       "1", "2", "3", "4", "5", "6", "7", "8", "9", '"', "[", "]",
+       "(", ")"]
     special_char.include?(letter)
   end
 
@@ -43,6 +45,7 @@ class Enigma
       position = alphabet.index(letter)
       new_alpha = alphabet.rotate(shift[0])
       encrypted << new_alpha[position]
+      # require 'pry'; binding.pry
       shift = shift.rotate(1)
     end
     output[:encryption] = encrypted.join
