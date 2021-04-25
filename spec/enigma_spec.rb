@@ -75,8 +75,7 @@ RSpec.describe do
       end
 
       expected = enigma.encrypt("Hello, World!?!?", "02715", enigma.offsets)
-
-      expect(expected).to eq(encryption: "qgfax, lxtft!?!?",
+      expect(expected).to eq(encryption: "qgfax,ulxtft!?!?",
                              key: "02715",
                              date: "240421")
     end
@@ -94,7 +93,7 @@ RSpec.describe do
 
       expected = enigma.encrypt("Hello, World!?!?", enigma.set_keys, enigma.offsets)
 
-      expect(expected).to eq(encryption: "rircy, nyvrv!?!?",
+      expect(expected).to eq(encryption: "rircy,fnyvrv!?!?",
                              key: "30298",
                              date: "240421")
     end
@@ -122,7 +121,7 @@ RSpec.describe do
         "240421"
       end
 
-      expected = enigma.decrypt("qgfax, lxtft!?!?", "02715", enigma.offsets)
+      expected = enigma.decrypt("qgfax,ulxtft!?!?", "02715", enigma.offsets)
 
       expect(expected).to eq(encryption: "hello, world!?!?",
                              key: "02715",
