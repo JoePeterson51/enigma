@@ -69,4 +69,24 @@ class Enigma
     output[:decryption] = encrypted.join
     output
   end
+
+  def code_cracker(encrypted, date)
+    offset = date.to_i.abs2 # = 1025
+    encrypted_split = encrypted.split('') # = ["h", "n", "w"]
+    encrypted_pos = encrypted_split.map do |letter|
+      alphabet.index(letter)
+    end # = [7, 13, 22]
+    end_pos = [4, 13, 3]
+    pos_difference = [] # = [2, 0, 17]
+    pos_difference << encrypted_pos[0] - end_pos[0] - offset.to_i.digits[3]
+    pos_difference << encrypted_pos[1] - end_pos[1] - offset.to_i.digits[2]
+    pos_difference << encrypted_pos[2] - end_pos[2] - offset.to_i.digits[1]
+    num = 0
+    key = []
+    until alphabet[num + offset.digits[3]] == "e" && num.digits[-1] || nil == key.last
+      num += 1
+    end
+    key << num - 1
+    require 'pry'; binding.pry
+  end
 end
